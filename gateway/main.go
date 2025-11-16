@@ -2,7 +2,7 @@
  * @Author: FunctionSir
  * @License: AGPLv3
  * @Date: 2025-11-15 10:29:22
- * @LastEditTime: 2025-11-16 23:27:08
+ * @LastEditTime: 2025-11-16 23:34:55
  * @LastEditors: FunctionSir
  * @Description: Gateway of waifucluster
  * @FilePath: /waifucluster/gateway/main.go
@@ -392,6 +392,11 @@ func statusHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		device = workerAny.(Worker).Device
 	}
+	if time.Now().After(job.FinishedAt.Add(7 * 24 * time.Hour)) {
+		// Since the file might be cleaned.
+		http.Error(w, "job expired", http.StatusNotFound)
+		return
+	}
 	status := JobStatusForApi{
 		Status:     job.Status,
 		Device:     device,
@@ -428,7 +433,7 @@ func resultHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	if time.Now().After(job.FinishedAt.Add(7 * 24 * time.Hour)) {
 		// Since the file might be cleaned.
-		http.Error(w, "job not found", http.StatusNotFound)
+		http.Error(w, "job expired", http.StatusNotFound)
 		return
 	}
 	data, err := os.ReadFile(job.Image)
