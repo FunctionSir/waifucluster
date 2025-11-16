@@ -2,7 +2,7 @@
  * @Author: FunctionSir
  * @License: AGPLv3
  * @Date: 2025-11-15 10:29:22
- * @LastEditTime: 2025-11-16 11:49:04
+ * @LastEditTime: 2025-11-16 16:04:00
  * @LastEditors: FunctionSir
  * @Description: Gateway of waifucluster
  * @FilePath: /waifucluster/gateway/main.go
@@ -548,6 +548,6 @@ func main() {
 
 	for range time.Tick(30 * time.Minute) {
 		log.Print("Heartbeat: Total Jobs: ", TotJobs.Load(), " Total Regs: ", TotRegs.Load())
-		log.Print("Heartbeat: Waiting Jobs: ", len(JobsQueue), "Relaxing Workers: ", len(WorkersQueue))
+		log.Print("Heartbeat: Waiting Jobs: ", len(JobsQueue), " Relaxing Workers: ", len(WorkersQueue))
 	}
 }
