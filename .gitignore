@@ -28,5 +28,12 @@ go.work.sum
 .env
 
 # Editor/IDE
-# .idea/
-# .vscode/
+.idea/
+.vscode/
+
+# Files and dirs for testing
+*/temp/
+*/test.conf
+gateway/frontend/
+gateway/wcg
+worker/wcw
