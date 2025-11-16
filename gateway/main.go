@@ -394,7 +394,7 @@ func statusHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	if time.Now().After(job.FinishedAt.Add(7 * 24 * time.Hour)) {
 		// Since the file might be cleaned.
-		http.Error(w, "job expired", http.StatusNotFound)
+		http.Error(w, "job expired", http.StatusGone)
 		return
 	}
 	status := JobStatusForApi{
@@ -433,7 +433,7 @@ func resultHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	if time.Now().After(job.FinishedAt.Add(7 * 24 * time.Hour)) {
 		// Since the file might be cleaned.
-		http.Error(w, "job expired", http.StatusNotFound)
+		http.Error(w, "job expired", http.StatusGone)
 		return
 	}
 	data, err := os.ReadFile(job.Image)
