@@ -2,7 +2,7 @@
  * @Author: FunctionSir
  * @License: AGPLv3
  * @Date: 2025-11-15 10:29:22
- * @LastEditTime: 2025-11-16 16:04:00
+ * @LastEditTime: 2025-11-16 23:27:08
  * @LastEditors: FunctionSir
  * @Description: Gateway of waifucluster
  * @FilePath: /waifucluster/gateway/main.go
@@ -427,7 +427,7 @@ func resultHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if time.Now().After(job.FinishedAt.Add(7 * 24 * time.Hour)) {
-		Jobs.Delete(jobToken)
+		// Since the file might be cleaned.
 		http.Error(w, "job not found", http.StatusNotFound)
 		return
 	}
@@ -476,7 +476,7 @@ func cleaner() {
 		now := time.Now()
 		Jobs.Range(func(key, val any) bool {
 			job := val.(Job)
-			if job.Status == JobStatusFinished && now.After(job.FinishedAt.Add(7*24*time.Hour)) {
+			if job.Status == JobStatusFinished && now.After(job.FinishedAt.Add((7*24+1)*time.Hour)) { // To prevent conflict.
 				Jobs.Delete(key)
 				go func(f string) {
 					var err error
